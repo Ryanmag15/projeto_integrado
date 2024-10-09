@@ -35,8 +35,9 @@ services:
 
   # Serviço do Frontend (React)
   front:
+    # image: front:latest
     build:
-      context: ./front
+      context: ./front/.docker/local
     container_name: front-crm
     ports:
       - "3000:3000"

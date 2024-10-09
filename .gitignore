@@ -9,3 +9,7 @@ back/.phpunit.result.cache
 # database
 database-data
 
+#bibliotecas do framework
+./back/vendor
+./front/node_modules
+

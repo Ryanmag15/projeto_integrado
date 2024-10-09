@@ -20,22 +20,21 @@ services:
     image: ryanmathias07/back
     container_name: back-crm
     ports:
-      - "8000:8000"
+      - "80:8000"
     depends_on:
       db:
         condition: service_healthy
 
-  # # Serviço do Frontend (React)
-  # front:
-  #   build:
-  #     context: ./front
-  #   container_name: front-crm
-  #   ports:
-  #     - "3000:3000"
-  #   volumes:
-  #     - ./front:/app
-  #   depends_on:
-  #     - back
+  # Serviço do Frontend (React)
+  front:
+    image: ryanmathias07/front
+    container_name: front-crm
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./front:/app
+    depends_on:
+      - back
 
 volumes:
   database-data:

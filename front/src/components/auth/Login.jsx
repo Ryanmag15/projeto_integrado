@@ -58,7 +58,7 @@ function Login() {
                         {loading ? 'Entrando...' : 'Entrar'}
                     </Button>
                     <Button fullWidth variant="outlined" onClick={() => navigate('/register')}>
-                        Não tem uma conta? Cadastre-se
+                        Não tem uma conta? Cadastre-se agora
                     </Button>
                 </Box>
             </Box>

@@ -11,43 +11,39 @@ import {
     Paper,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import { useAuth } from '../../../context/AuthContext';
+import useHttp from '../../hooks/useHttp';
 
 const CompanyList = () => {
+    const { get, Delete } = useHttp(); // Utilize o hook useHttp
     const [companies, setCompanies] = useState([]);
-    const { token } = useAuth();
+    const { token } = useAuth(); // Aqui você pode pegar o token do contexto de autenticação
+
+    const fetchCompanies = async () => {
+        if (!token) {
+            console.error('Token está vazio, não é possível buscar empresas.');
+            return;
+        }
+
+        try {
+            const response = await get('/company');
+            setCompanies(response);
+        } catch (error) {
+            console.error('Erro ao buscar empresas:', error);
+        }
+    };
+
 
     useEffect(() => {
-        const fetchCompanies = async () => {
-            if (!token) {
-                console.error('Token está vazio, não é possível buscar empresas.');
-                return;
-            }
-            try {
-                const response = await axios.get('http://localhost:8000/company', {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                setCompanies(response.data);
-            } catch (error) {
-                console.error('Erro ao buscar empresas:', error);
-            }
-        };
-
         fetchCompanies();
-    }, [token]);
+    }, []); // Adicione get como dependência também
 
     // Função para deletar a empresa
     const handleDelete = async (id) => {
         if (window.confirm("Você tem certeza que deseja deletar esta empresa?")) {
             try {
-                await axios.delete(`http://localhost:8000/company/${id}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+                // Usando o hook useHttp para deletar a empresa
+                await Delete(`/company/${id}`);
                 // Atualiza a lista de empresas após a exclusão
                 setCompanies(companies.filter(company => company.id !== id));
                 console.log('Empresa deletada com sucesso!');

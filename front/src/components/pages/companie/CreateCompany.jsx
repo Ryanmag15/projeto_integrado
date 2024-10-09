@@ -4,8 +4,10 @@ import { Container, TextField, Button, Typography } from '@mui/material';
 import axios from 'axios';
 import { useAuth } from '../../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import useHttp from '../../hooks/useHttp';
 
 const CreateCompany = () => {
+    const {post, get } = useHttp();
     const { token } = useAuth(); // Obtém o token do contexto de autenticação
     const navigate = useNavigate();
     const [company, setCompany] = useState({
@@ -25,18 +27,10 @@ const CreateCompany = () => {
         e.preventDefault();
         // Lógica para enviar a nova empresa para a API
         try {
-            const response = await axios.post('http://localhost:8000/company', company, {
-                headers: {
-                    Authorization: `Bearer ${token}`, // Adiciona o token no cabeçalho
-                },
-            });
-            if (response.status === 200) { // Ajustado para verificar o status correto
-                console.log('Empresa criada com sucesso!');
-            }
+            await post('/company', company);
             navigate('/companies');
-
         } catch (error) {
-            console.error('Erro ao criar empresa:', error);
+            console.error(error);
         }
     };
     

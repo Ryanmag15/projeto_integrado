@@ -3,8 +3,10 @@ import React, { useState } from 'react';
 import { TextField, Button, Typography, Container, Box } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import useHttp from '../hooks/useHttp';
 
 function Register() {
+    const {post, get} = useHttp();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -13,14 +15,12 @@ function Register() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
         try {
-            await axios.post('http://localhost:8000/auth/register', {
-                name,
-                email,
-                password,
-            });
+            const response = await post('/auth/register', { name, email, password });
             navigate('/login');
         } catch (error) {
+            console.error(error);
             setError('Erro ao registrar. Tente novamente.');
         }
     };

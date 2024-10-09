@@ -1,14 +1,14 @@
 import React from "react";
 import axios from "axios";
-import Routes from "../api/routes";
-import { getCookie, getCookies, setCookie } from "cookies-next";
-import { useRouter } from "next/router";
+import { getCookie, setCookie, getCookies } from "cookies-next"; // Importação correta
+import { useNavigate } from "react-router-dom"; // Importação correta
 import { useSnackbar } from "notistack";
+import { Routes } from "react-router-dom";
 
 const useHttp = () => {
     const [loading, setLoading] = React.useState(false);
     const { enqueueSnackbar } = useSnackbar();
-    const router = useRouter();
+    const navigate = useNavigate(); // Navegação correta
     const allowedRoutes = ["/auth/login", "/auth/register"];
     const innerHttp = axios.create({
         baseURL: process.env.REACT_APP_API_URL,
@@ -17,9 +17,12 @@ const useHttp = () => {
         },
     });
 
+
     const setToken = (response) => {
-        if (response && response.data && response.data.token) {
-            setCookie("access-token", response.data.token);
+        console.log('response');
+        console.log(response);
+        if (response && response.data && response.access_token) {
+            setCookie("access-token", response.access_token);
             setCookie("refresh-token", response.data.refresh_token);
         }
     };
@@ -29,9 +32,9 @@ const useHttp = () => {
             await refreshToken();
         } else if (
             e.response?.status === 401 &&
-            !!allowedRoutes.find((el) => el === router.asPath)
+            !!allowedRoutes.find((el) => el === window.location.pathname) // Ajuste para usar window.location.pathname
         ) {
-            await router.push("/auth/login");
+            await navigate("/auth/login");
         }
     };
 
@@ -47,7 +50,7 @@ const useHttp = () => {
         } catch (e) {
             await checkErrors(e);
             if (e.response?.data === undefined) {
-                await router.replace("/auth/login");
+                await navigate.replace("/auth/login");
             }
             throw e;
         } finally {
@@ -188,7 +191,7 @@ const useHttp = () => {
         Object.keys(getCookies()).forEach((name) => {
             setCookie(name, "", { maxAge: 1 });
         });
-        router.reload();
+        navigate.reload(); // Navegação correta
     };
 
     const refreshToken = async () => {

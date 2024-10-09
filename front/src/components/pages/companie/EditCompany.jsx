@@ -3,8 +3,10 @@ import { Container, TextField, Button, Typography } from '@mui/material';
 import axios from 'axios';
 import { useAuth } from '../../../context/AuthContext';
 import { useParams, useNavigate } from 'react-router-dom';
+import useHttp from '../../hooks/useHttp';
 
 const EditCompany = () => {
+    const { post, get, put } = useHttp();
     const { token } = useAuth(); // Obtém o token do contexto de autenticação
     const { id } = useParams(); // Obtém o ID da empresa da URL
     const [company, setCompany] = useState({
@@ -20,13 +22,15 @@ const EditCompany = () => {
     // Função para buscar os detalhes da empresa ao carregar o componente
     useEffect(() => {
         const fetchCompanyDetails = async () => {
+            if (!token) {
+                console.error('Token está vazio, não é possível buscar empresas.');
+                return;
+            }
+
             try {
-                const response = await axios.get(`http://localhost:8000/company/${id}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`, // Adiciona o token no cabeçalho
-                    },
-                });
-                setCompany(response.data); // Define os dados da empresa no estado
+                // Usando o hook useHttp para buscar detalhes da empresa
+                const response = await get(`/company/${id}`);
+                setCompany(response);
             } catch (error) {
                 console.error('Erro ao buscar detalhes da empresa:', error);
             }
@@ -41,17 +45,14 @@ const EditCompany = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        // Lógica para enviar a empresa editada para a API
         try {
-            await axios.put(`http://localhost:8000/company/${id}`, company, {
-                headers: {
-                    Authorization: `Bearer ${token}`, // Adiciona o token no cabeçalho
-                },
-            });
-            console.log('Empresa editada com sucesso!');
-            navigate('/companies'); // Redireciona para a lista de empresas após a edição
+            await put(`/company/${id}`, company);
+            navigate('/companies');
         } catch (error) {
-            console.error('Erro ao editar empresa:', error);
+            console.error(error);
         }
+    
     };
 
     return (

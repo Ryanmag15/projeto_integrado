@@ -1,12 +1,10 @@
-// src/components/Login.jsx
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Container, Box } from '@mui/material';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import useHttp from '../hooks/useHttp';
+import { useNavigate } from 'react-router-dom'; // Use esta linha para navegação
 
 function Login() {
-    const {get, post} = useHttp();
+    const { post, loading } = useHttp();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -14,12 +12,11 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError(''); // Resetar mensagem de erro
         try {
-            const response = await post('/auth/login', {
-                email,
-                password,
-            });
-            localStorage.setItem('token', response.data.access_token);
+            const response = await post('/auth/login', { email, password });
+            console.log(response);
+            localStorage.setItem('access-token', response.access_token);
             navigate('/home');
         } catch (error) {
             console.error(error);
@@ -29,17 +26,8 @@ function Login() {
 
     return (
         <Container component="main" maxWidth="xs">
-            <Box
-                sx={{
-                    marginTop: 8,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                }}
-            >
-                <Typography component="h1" variant="h5">
-                    Login
-                </Typography>
+            <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Typography component="h1" variant="h5">Login</Typography>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                     <TextField
                         margin="normal"
@@ -65,26 +53,11 @@ function Login() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    {error && (
-                        <Typography color="error" variant="body2">
-                            {error}
-                        </Typography>
-                    )}
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                    >
-                        Entrar
+                    {error && <Typography color="error" variant="body2">{error}</Typography>}
+                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={loading}>
+                        {loading ? 'Entrando...' : 'Entrar'}
                     </Button>
-
-                    {/* Botão para redirecionar para a página de cadastro */}
-                    <Button
-                        fullWidth
-                        variant="outlined"
-                        onClick={() => navigate('/register')} // Navegar para a página de cadastro
-                    >
+                    <Button fullWidth variant="outlined" onClick={() => navigate('/register')}>
                         Não tem uma conta? Cadastre-se
                     </Button>
                 </Box>

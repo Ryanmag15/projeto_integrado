@@ -3,8 +3,10 @@ import React, { useState } from 'react';
 import { TextField, Button, Typography, Container, Box } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import useHttp from '../hooks/useHttp';
 
 function Login() {
+    const {get, post} = useHttp();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -13,7 +15,7 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8000/auth/login', {
+            const response = await post('/auth/login', {
                 email,
                 password,
             });

@@ -10,6 +10,7 @@ class LogExceptions
 {
     public function handle(Request $request, Closure $next)
     {
+        $request->headers->set('Accept', 'application/json');
         try {
             return $next($request);
         } catch (Exception $e) {

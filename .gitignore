@@ -1,0 +1,11 @@
+# local env files
+/front/.env
+/front/.env.local
+/back/.env
+/back/.env.testing
+front/.env.local
+back/.phpunit.result.cache
+
+# database
+database-data
+

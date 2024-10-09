@@ -19,13 +19,17 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo pdo_mysql gd zip
 
 # Instala Composer
-COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Define o diretório de trabalho
 WORKDIR /var/www
 
 # Copia o código da aplicação
 COPY . .
+
+COPY --chown=root:root ./.docker/local/entrypoint.sh /run/entrypoint.sh
+
+RUN chmod +x /run/entrypoint.sh
 
 # Instala as dependências do Laravel
 RUN composer install
@@ -39,5 +43,4 @@ RUN chmod -R 777 /var/www
 # Exponha a porta que o servidor embutido do Laravel vai rodar
 EXPOSE 8000
 
-# Comando para rodar o servidor embutido do Laravel
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+ENTRYPOINT  "/run/entrypoint.sh" 

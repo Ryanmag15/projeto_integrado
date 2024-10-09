@@ -4,65 +4,44 @@ services:
   # Serviço do MySQL
   db:
     image: mysql:8.0
-    container_name: database
+    container_name: database-crm
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: crm
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
     ports:
       - "3306:3306"
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u root --password=root
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 55 
     volumes:
-      - mysql_data:/var/lib/mysql
-    networks:
-      - crm_network
-
+      - ./database-data:/var/lib/mysql
+  
   # Serviço do Backend (Laravel)
   back:
-    build:
-      context: ./back
-    container_name: back
+    image: back:latest
+    # build:
+    #   context: ./back
+    container_name: back-crm
     ports:
       - "8000:8000"
     volumes:
       - ./back:/var/www
     depends_on:
-      - db
-    networks:
-      - crm_network
+      db:
+        condition: service_healthy
 
   # Serviço do Frontend (React)
   front:
     build:
       context: ./front
-    container_name: front
+    container_name: front-crm
     ports:
       - "3000:3000"
     volumes:
       - ./front:/app
     depends_on:
       - back
-    networks:
-      - crm_network
 
-  # Serviço para rodar comandos Artisan
-  artisan:
-    build:
-      context: ./back
-    command: >
-      sh -c "php artisan migrate --force && php artisan db:seed --force"
-    volumes:
-      - ./back:/var/www
-    depends_on:
-      - back
-    networks:
-      - crm_network
-
-# Volumes para persistência de dados
-volumes:
-  mysql_data:
-
-# Rede comum para todos os serviços
-networks:
-  crm_network:
-    driver: bridge

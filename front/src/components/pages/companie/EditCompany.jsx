@@ -35,7 +35,7 @@ const EditCompany = () => {
     // Função para buscar os detalhes da empresa ao carregar o componente
     useEffect(() => {
         fetchCompanyDetails();
-    }, [id]); // Adicione get como dependência também
+    }); // Adicione get como dependência também
 
     const handleChange = (e) => {
         setCompany({ ...company, [e.target.name]: e.target.value });

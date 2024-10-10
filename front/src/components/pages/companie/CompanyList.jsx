@@ -38,7 +38,7 @@ const CompanyList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         fetchCompanies();
-    }, [get, token]); // Array de dependências vazio significa que será chamado uma vez ao montar
+    }, []); // Array de dependências vazio significa que será chamado uma vez ao montar
 
     // Função para deletar a empresa
     const handleDelete = async (id) => {

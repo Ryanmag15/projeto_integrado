@@ -7,7 +7,7 @@ export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState('');
 
     useEffect(() => {
-        const storedToken = localStorage.getItem('token'); // Tente obter o token do localStorage
+        const storedToken = localStorage.getItem('access-token'); // Tente obter o token do localStorage
         console.log("storedToken", storedToken);
         if (storedToken) {
             setToken(storedToken);

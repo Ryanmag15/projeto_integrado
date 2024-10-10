@@ -16,15 +16,19 @@ const useHttp = () => {
             Authorization: `Bearer ${getCookie("access-token")}`,
         },
     });
+    console.log("REACT_APP_API_URL " + REACT_APP_API_URL);
     console.log("innerHttp " + innerHttp);
 
 
     const setToken = (response) => {
         console.log('response');
         console.log(response);
-        if (response && response.data && response.access_token) {
+        if (response && response.access_token) {
+            console.log('response.access_token');
+            console.log(response.access_token);
+
             setCookie("access-token", response.access_token);
-            setCookie("refresh-token", response.data.refresh_token);
+            setCookie("refresh-token", response.refresh_token);
         }
     };
 

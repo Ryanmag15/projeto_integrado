@@ -18,6 +18,7 @@ const CompanyList = () => {
     const { get, Delete } = useHttp(); // Utilize o hook useHttp
     const [companies, setCompanies] = useState([]);
     const { token } = useAuth(); // Aqui você pode pegar o token do contexto de autenticação
+    const [isLoading, setIsLoading] = useState(false);
 
     const fetchCompanies = async () => {
         if (!token) {
@@ -27,6 +28,9 @@ const CompanyList = () => {
 
         try {
             const response = await get('/company');
+            if (response) {
+                setIsLoading(true);
+            }
             setCompanies(response);
         } catch (error) {
             console.error('Erro ao buscar empresas:', error);
@@ -36,7 +40,7 @@ const CompanyList = () => {
 
     useEffect(() => {
         fetchCompanies();
-    }, [token]); // Adicione get como dependência também
+    }, [isLoading]); // Adicione get como dependência também
 
     // Função para deletar a empresa
     const handleDelete = async (id) => {

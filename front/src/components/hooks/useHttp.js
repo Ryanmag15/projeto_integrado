@@ -28,6 +28,8 @@ const useHttp = () => {
     };
 
     const checkErrors = async (e) => {
+        console.log('e');
+        console.log(e);
         if (e.response?.status === 401 && getCookie("access-token")) {
             await refreshToken();
         } else if (

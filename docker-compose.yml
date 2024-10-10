@@ -3,38 +3,59 @@ version: '3'
 services:
   # Serviço do MySQL
   db:
-    image: mysql:8.0
+    image: mysql:8.0.39
     container_name: database-crm
+    ports:
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: crm
-    healthcheck:
-      test: mysqladmin ping -h 127.0.0.1 -u root --password=root
-      start_period: 5s
-      interval: 5s
-      timeout: 5s
-      retries: 55
+    command: mysqld --sql_mode="" --character-set-server=utf8 --collation-server=utf8_slovenian_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
     volumes:
       - database-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - crm-network
 
   # Serviço do Backend (Laravel)
   back:
-    image: ryanmathias07/back
+    build:
+      context: ./back/.docker/local
+      dockerfile: Dockerfile
     container_name: back-crm
     ports:
-      - "80:8000"
+      - "8000:8000"
     depends_on:
       db:
         condition: service_healthy
+    volumes:
+      - ./back:/var/www  # Adicionando um volume para garantir que o código do back-end seja persistido
+    networks:
+      - crm-network   
 
   # Serviço do Frontend (React)
   front:
-    image: ryanmathias07/front # Substitua pelo nome do seu repositório Docker Hub
+    build:
+      context: ./front
+      dockerfile: ./.docker/local/Dockerfile
     container_name: front-crm
     ports:
-      - "3000:80" # Mapeando a porta 80 do container para a porta 3000 do host
+      - "3000:3000" 
     depends_on:
       - back
+    volumes:
+      - ./front:/app  # Adicionando um volume para garantir que o código do front-end seja persistido  
+    networks:
+      - crm-network  
 
 volumes:
   database-data:
+
+
+networks:
+  crm-network:
+    name: crm-network

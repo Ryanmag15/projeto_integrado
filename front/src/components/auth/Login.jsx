@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Container, Box } from '@mui/material';
 import useHttp from '../hooks/useHttp';
-import { useNavigate } from 'react-router-dom'; // Use esta linha para navegação
+import { useNavigate } from 'react-router-dom'; 
 
 function Login() {
     const { post, loading } = useHttp();
@@ -12,7 +12,7 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(''); // Resetar mensagem de erro
+        setError('');
         try {
             const response = await post('/auth/login', { email, password });
             console.log(response);

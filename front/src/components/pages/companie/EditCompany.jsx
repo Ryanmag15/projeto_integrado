@@ -18,25 +18,24 @@ const EditCompany = () => {
     });
     const navigate = useNavigate(); // Para redirecionar após a edição
 
+    const fetchCompanyDetails = async () => {
+        if (!token) {
+            console.error('Token está vazio, não é possível buscar empresas.');
+            return;
+        }
+        try {
+            // Usando o hook useHttp para buscar detalhes da empresa
+            const response = await get(`/company/${id}`);
+            setCompany(response);
+        } catch (error) {
+            console.error('Erro ao buscar detalhes da empresa:', error);
+        }
+    };
+
     // Função para buscar os detalhes da empresa ao carregar o componente
     useEffect(() => {
-        const fetchCompanyDetails = async () => {
-            if (!token) {
-                console.error('Token está vazio, não é possível buscar empresas.');
-                return;
-            }
-
-            try {
-                // Usando o hook useHttp para buscar detalhes da empresa
-                const response = await get(`/company/${id}`);
-                setCompany(response);
-            } catch (error) {
-                console.error('Erro ao buscar detalhes da empresa:', error);
-            }
-        };
-
         fetchCompanyDetails();
-    });
+    }, [id]); // Adicione get como dependência também
 
     const handleChange = (e) => {
         setCompany({ ...company, [e.target.name]: e.target.value });

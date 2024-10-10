@@ -18,7 +18,6 @@ const CompanyList = () => {
     const { get, Delete } = useHttp(); // Utilize o hook useHttp
     const [companies, setCompanies] = useState([]);
     const { token } = useAuth(); // Aqui você pode pegar o token do contexto de autenticação
-    const [isLoading, setIsLoading] = useState(false);
 
     const fetchCompanies = async () => {
         if (!token) {
@@ -28,19 +27,16 @@ const CompanyList = () => {
 
         try {
             const response = await get('/company');
-            if (response) {
-                setIsLoading(true);
-            }
             setCompanies(response);
         } catch (error) {
             console.error('Erro ao buscar empresas:', error);
         }
     };
 
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         fetchCompanies();
-    }, [isLoading]); // Adicione get como dependência também
+    }, []); // Array de dependências vazio significa que será chamado uma vez ao montar
 
     // Função para deletar a empresa
     const handleDelete = async (id) => {
@@ -93,10 +89,10 @@ const CompanyList = () => {
                                     <Button variant="outlined" component={Link} to={`/edit-company/${company.id}`}>
                                         Editar
                                     </Button>
-                                    <Button 
-                                        variant="outlined" 
-                                        color="error" 
-                                        style={{ marginLeft: '8px' }} 
+                                    <Button
+                                        variant="outlined"
+                                        color="error"
+                                        style={{ marginLeft: '8px' }}
                                         onClick={() => handleDelete(company.id)}
                                     >
                                         Deletar

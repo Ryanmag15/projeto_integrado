@@ -1,12 +1,11 @@
 // src/components/Register.jsx
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Container, Box } from '@mui/material';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import useHttp from '../hooks/useHttp';
 
 function Register() {
-    const {post, get} = useHttp();
+    const {post} = useHttp();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -17,7 +16,7 @@ function Register() {
         e.preventDefault();
         setError('');
         try {
-            const response = await post('/auth/register', { name, email, password });
+            await post('/auth/register', { name, email, password });
             navigate('/login');
         } catch (error) {
             console.error(error);

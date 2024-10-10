@@ -17,6 +17,7 @@ function Login() {
             const response = await post('/auth/login', { email, password });
             console.log(response);
             localStorage.setItem('access-token', response.access_token);
+            console.log('home aqui');
             navigate('/home');
         } catch (error) {
             console.error(error);

@@ -16,6 +16,7 @@ const useHttp = () => {
             Authorization: `Bearer ${getCookie("access-token")}`,
         },
     });
+    console.log("innerHttp " + innerHttp);
 
 
     const setToken = (response) => {
@@ -71,8 +72,11 @@ const useHttp = () => {
             const res = await innerHttp.post(`${route}`, data, options);
             setToken(res.data);
 
+            console.log('res');
+            console.log(res);
             return res.data;
         } catch (e) {
+            console.log(e);
             await checkErrors(e);
 
             if (e.response.data.errors) {

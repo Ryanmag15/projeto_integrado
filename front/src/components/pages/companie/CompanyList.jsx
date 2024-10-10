@@ -36,7 +36,7 @@ const CompanyList = () => {
 
     useEffect(() => {
         fetchCompanies();
-    }); // Adicione get como dependência também
+    }, [token]); // Adicione get como dependência também
 
     // Função para deletar a empresa
     const handleDelete = async (id) => {

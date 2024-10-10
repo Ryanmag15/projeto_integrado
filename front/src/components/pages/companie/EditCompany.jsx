@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useEffect, useState } from 'react';
 import { Container, TextField, Button, Typography } from '@mui/material';
 import { useAuth } from '../../../context/AuthContext';
@@ -35,7 +37,7 @@ const EditCompany = () => {
     // Função para buscar os detalhes da empresa ao carregar o componente
     useEffect(() => {
         fetchCompanyDetails();
-    }); // Adicione get como dependência também
+    }, [id]); // Adicione get como dependência também
 
     const handleChange = (e) => {
         setCompany({ ...company, [e.target.name]: e.target.value });

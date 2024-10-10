@@ -36,7 +36,7 @@ const EditCompany = () => {
         };
 
         fetchCompanyDetails();
-    }, [id]);
+    });
 
     const handleChange = (e) => {
         setCompany({ ...company, [e.target.name]: e.target.value });

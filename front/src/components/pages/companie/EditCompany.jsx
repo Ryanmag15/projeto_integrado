@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Container, TextField, Button, Typography } from '@mui/material';
-import axios from 'axios';
 import { useAuth } from '../../../context/AuthContext';
 import { useParams, useNavigate } from 'react-router-dom';
 import useHttp from '../../hooks/useHttp';
 
 const EditCompany = () => {
-    const { post, get, put } = useHttp();
+    const { get, put } = useHttp();
     const { token } = useAuth(); // Obtém o token do contexto de autenticação
     const { id } = useParams(); // Obtém o ID da empresa da URL
     const [company, setCompany] = useState({
@@ -37,7 +36,7 @@ const EditCompany = () => {
         };
 
         fetchCompanyDetails();
-    }, [id, token]);
+    }, [id]);
 
     const handleChange = (e) => {
         setCompany({ ...company, [e.target.name]: e.target.value });

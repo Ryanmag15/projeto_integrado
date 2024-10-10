@@ -1,14 +1,11 @@
 // src/pages/CreateCompany.js
 import React, { useState } from 'react';
 import { Container, TextField, Button, Typography } from '@mui/material';
-import axios from 'axios';
-import { useAuth } from '../../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import useHttp from '../../hooks/useHttp';
 
 const CreateCompany = () => {
-    const {post, get } = useHttp();
-    const { token } = useAuth(); // Obtém o token do contexto de autenticação
+    const {post } = useHttp();
     const navigate = useNavigate();
     const [company, setCompany] = useState({
         name: '',

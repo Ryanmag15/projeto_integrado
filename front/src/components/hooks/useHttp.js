@@ -16,7 +16,6 @@ const useHttp = () => {
             Authorization: `Bearer ${getCookie("access-token")}`,
         },
     });
-    console.log("REACT_APP_API_URL " + REACT_APP_API_URL);
     console.log("innerHttp " + innerHttp);
 
 

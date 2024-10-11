@@ -22,7 +22,6 @@ const CreateCompany = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Lógica para enviar a nova empresa para a API
         try {
             await post('/company', company);
             navigate('/companies');

@@ -23,6 +23,16 @@ class UserSeeder extends Seeder
             ]
         );
 
+        // Criação de um usuário admin
+        User::updateOrCreate(
+            ['email' => 'junilson.pereira@sga.pucminas.br'],
+            [
+                'name' => 'Admin User',
+                'password' => bcrypt('123456'),
+                'role_id' => Role::where('name', 'Admin')->first()->id,
+            ]
+        );
+
         // Criação de um usuário manager
         User::updateOrCreate(
             ['email' => 'manager@example.com'],

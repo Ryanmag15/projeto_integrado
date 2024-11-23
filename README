@@ -1,0 +1,27 @@
+Build do site:
+Primeira coisa é colocar o EC2 para rodar, pegar o IP e trocar o ip da env do front;
+Depois disso fazer build do front "sudo npm run build"
+Depois disso faz o commit e push assim ele vai subir os novos arquivos do front no s3.
+Deletar os arquivos estáticos do bucket pois não está escrevendo por cima.
+Chegar no terminal do ec2 e rodar o comando "docker compose up -d --build" para subir o back.
+
+Caso precise rodar local ou enviar a imagem do back:
+--------------------------------------
+comando para buildar uma pasta:
+docker build -t back:latest -f .docker/server/Dockerfile .
+docker push ryanmathias07/back:latest
+docker run -p 8080:8000  back:latest
+
+--------------------------------
+comando para buildar uma pasta:
+docker build -t front:latest -f .docker/server/Dockerfile .
+docker run -p 3000:3000  back:latest
+docker push ryanmathias07/front:latest
+
+URL do repositório: https://github.com/Ryanmag15/projeto_integrado
+URL do back: http://ip-ec2/auth/login
+URL do front: http://bucket-front-ryan.s3-website-us-east-1.amazonaws.com
+URL do APP: http://bucket-front-ryan.s3-website-us-east-1.amazonaws.com
+URL do vídeo: https://drive.google.com/file/d/1_L6vioCazxpwgnE8GVid6BUQkTBnC_-m/view?usp=sharing
+USUARIO: ryanmag15@gmail.com
+SENHA: 123456

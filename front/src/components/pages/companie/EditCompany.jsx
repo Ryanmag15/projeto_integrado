@@ -21,10 +21,10 @@ const EditCompany = () => {
     const navigate = useNavigate(); // Para redirecionar após a edição
 
     const fetchCompanyDetails = async () => {
-        if (!token) {
-            console.error('Token está vazio, não é possível buscar empresas.');
-            return;
-        }
+        // if (!token) {
+        //     console.error('Token está vazio, não é possível buscar empresas.');
+        //     return;
+        // }
         try {
             // Usando o hook useHttp para buscar detalhes da empresa
             const response = await get(`/company/${id}`);

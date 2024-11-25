@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
         if (storedToken) {
             setToken(storedToken);
         }
-    }, []);
+    }, [token]);
 
     return (
         <AuthContext.Provider value={{ token, setToken }}>

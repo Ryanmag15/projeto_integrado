@@ -22,10 +22,10 @@ const CompanyList = () => {
     const { token } = useAuth(); // Aqui você pode pegar o token do contexto de autenticação
 
     const fetchCompanies = async () => {
-        if (!token) {
-            console.error('Token está vazio, não é possível buscar empresas.');
-            return;
-        }
+        // if (!token) {
+        //     console.error('Token está vazio, não é possível buscar empresas.');
+        //     return;
+        // }
 
         try {
             const response = await get('/company');

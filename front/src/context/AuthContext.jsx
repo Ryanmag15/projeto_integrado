@@ -1,18 +1,18 @@
 // src/context/AuthContext.jsx
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [token, setToken] = useState(() => localStorage.getItem('access-token') || '');
+    const [token, setToken] = useState(() => localStorage.getItem("access-token") || "");
 
     useEffect(() => {
-        const storedToken = localStorage.getItem('access-token'); // Tente obter o token do localStorage
-        console.log("storedToken", storedToken);
+        const storedToken = localStorage.getItem("access-token");
+        console.log("Token armazenado:", storedToken);
         if (storedToken) {
             setToken(storedToken);
         }
-    }, [token]);
+    }, []); // Apenas na montagem
 
     return (
         <AuthContext.Provider value={{ token, setToken }}>

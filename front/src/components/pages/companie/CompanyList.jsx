@@ -23,7 +23,10 @@ const CompanyList = () => {
 
     const fetchCompanies = async () => {
         if (!token) {
-            console.error('Token está vazio, não é possível buscar empresas.');
+            token = useAuth();
+            if (!token) {
+                console.error('Token está vazio, não é possível buscar empresas.');
+            }
             return;
         }
 
